@@ -1,8 +1,48 @@
 <template>
-  <v-card class="mb-4 account-card w-100" max-width="600px" elevation="2">
+  <v-card class="mb-4 account-card w-100" elevation="2">
     <v-card-text>
-      <v-row>
-        <v-col cols="12" md="6">
+      <v-row class="d-flex flex-wrap" align="start">
+        <v-col cols="12" class="d-flex justify-space-between pa-0" style="position: relative;">
+          <TagList :tags="localLabelsString.split(';').filter(t => t.trim())" />
+
+          <v-chip
+              v-if="showValidationStatus"
+              :color="localAccount.isValid ? 'success' : 'warning'"
+              :prepend-icon="localAccount.isValid ? 'mdi-check' : 'mdi-alert'"
+              size="small"
+              variant="tonal"
+              style="z-index:32"
+          >
+            {{ localAccount.isValid ? 'Запись сохранена' : 'Заполните обязательные поля' }}
+          </v-chip>
+
+          <div class="button-group">
+            <v-btn
+                icon
+                @click="$emit('edit', account.id)"
+                size="small"
+                class="mr-2"
+            >
+              <v-icon>mdi-pencil</v-icon>
+              <v-tooltip activator="parent" location="top">Редактировать</v-tooltip>
+            </v-btn>
+
+            <v-btn
+                color="error"
+                icon="mdi-delete"
+                variant="text"
+                @click="confirmDelete"
+                size="small"
+            >
+              <v-icon>mdi-delete</v-icon>
+              <v-tooltip activator="parent" location="top">
+                Удалить учетную запись
+              </v-tooltip>
+            </v-btn>
+          </div>
+        </v-col>
+
+        <v-col cols="12" md="3">
           <v-text-field
               v-model="localLabelsString"
               label="Метка"
@@ -19,11 +59,10 @@
               <v-icon>mdi-tag-multiple</v-icon>
             </template>
           </v-text-field>
-          <TagList :tags="localLabelsString.split(';').filter(t => t.trim())" />
 
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="3">
           <v-select
               v-model="localAccount.type"
               :items="accountTypes"
@@ -38,7 +77,7 @@
           </v-select>
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="3">
           <v-text-field
               v-model="localAccount.login"
               label="Логин *"
@@ -57,7 +96,7 @@
           </v-text-field>
         </v-col>
 
-        <v-col v-if="localAccount.type === 'Локальная'" cols="12" md="6">
+        <v-col v-if="localAccount.type === 'Локальная'" cols="12" md="3">
           <v-text-field
               v-model="localAccount.password"
               label="Пароль *"
@@ -80,42 +119,6 @@
               </v-icon>
             </template>
           </v-text-field>
-        </v-col>
-
-        <v-col cols="12" class="d-flex justify-space-between align-center pa-0">
-          <div class="flex-grow-1">
-            <v-chip
-                v-if="showValidationStatus"
-                :color="localAccount.isValid ? 'success' : 'warning'"
-                :prepend-icon="localAccount.isValid ? 'mdi-check' : 'mdi-alert'"
-                size="small"
-                variant="tonal"
-            >
-              {{ localAccount.isValid ? 'Запись сохранена' : 'Заполните обязательные поля' }}
-            </v-chip>
-          </div>
-          <v-btn
-              icon
-              @click="$emit('edit', account.id)"
-              size="small"
-              class="mr-2"
-          >
-            <v-icon>mdi-pencil</v-icon>
-            <v-tooltip activator="parent" location="top">Редактировать</v-tooltip>
-          </v-btn>
-
-          <v-btn
-              color="error"
-              icon="mdi-delete"
-              variant="text"
-              @click="confirmDelete"
-              size="small"
-          >
-            <v-icon>mdi-delete</v-icon>
-            <v-tooltip activator="parent" location="top">
-              Удалить учетную запись
-            </v-tooltip>
-          </v-btn>
         </v-col>
       </v-row>
 
@@ -271,4 +274,5 @@ const handleDelete = (): void => {
 .account-card.invalid {
   border-left-color: #f44336;
 }
+
 </style>

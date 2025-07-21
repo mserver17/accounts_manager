@@ -1,11 +1,10 @@
 <template>
   <v-container class="accounts-form">
-    <!-- Заголовок и кнопка добавления -->
-    <v-row class="mb-6">
+    <v-row class="pa-0">
       <v-col cols="12">
         <div class="info">
           <div>
-            <h1 class="text-h4 font-weight-bold text-secondary mb-2">
+            <h1 class="text-h4 font-weight-bold text-secondary mb-1">
               Управление учетными записями
             </h1>
             <p class="text-subtitle-1 text-medium-emphasis">
@@ -74,8 +73,9 @@
                 v-for="account in accountsStore.accounts"
                 :key="account.id"
                 cols="12"
-                md="8"
-                lg="6"
+                md="12"
+                lg="8"
+                class="mx-auto"
             >
               <AccountItem
                   :account="account"
@@ -161,6 +161,7 @@ onMounted(() => {
 }
 .info{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 90%;
 }
