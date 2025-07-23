@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" dark elevation="4" height="70">
+    <v-app-bar color="primary" dark elevation="4" height="60">
       <template #prepend>
         <v-app-bar-nav-icon>
           <v-icon>mdi-account-cog</v-icon>
@@ -32,7 +32,7 @@
     <v-snackbar
         v-model="showNotification"
         :color="notificationColor"
-        :timeout="3000"
+        :timeout="4000"
         location="top right"
     >
       {{ notificationText }}
@@ -81,7 +81,6 @@ const refreshData = (): void => {
   transform: translateY(-1px);
 }
 
-/* Скролл */
 ::-webkit-scrollbar {
   width: 8px;
 }

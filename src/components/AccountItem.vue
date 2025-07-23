@@ -133,8 +133,8 @@
             Вы уверены, что хотите <strong>удалить</strong> эту учетную запись?
             <br />
             <span class="text-caption text-medium-emphasis">
-        Логин: <strong>{{ localAccount.login || 'не указан' }}</strong>
-      </span>
+                Логин: <strong>{{ localAccount.login || 'не указан' }}</strong>
+            </span>
           </v-card-text>
 
           <v-card-actions class="justify-end mt-4">

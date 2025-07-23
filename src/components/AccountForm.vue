@@ -1,15 +1,12 @@
 <template>
   <v-container class="accounts-form">
     <v-row class="pa-0">
-      <v-col cols="12">
+      <v-col cols="12" style="padding: 0.8rem">
         <div class="info">
-          <div>
-            <h1 class="text-h4 font-weight-bold text-secondary mb-1">
+          <div class="info-block">
+            <h1 class="title">
               Управление учетными записями
             </h1>
-            <p class="text-subtitle-1 text-medium-emphasis">
-              Всего записей: {{ accountsStore.accountsCount }}
-            </p>
           </div>
           <v-btn
               color="primary"
@@ -24,8 +21,8 @@
       </v-col>
     </v-row>
 
-    <v-row class="mb-6 ">
-      <v-col cols="12" class="pa-0">
+    <v-row class="mb-2">
+      <v-col cols="12" class="pa-0 instructions">
         <v-alert
             type="info"
             variant="tonal"
@@ -36,7 +33,7 @@
           <template #prepend>
             <v-icon>mdi-information</v-icon>
           </template>
-          <v-alert-title>Подсказка по заполнению меток</v-alert-title>
+          <v-alert-title class="instructions__title">Подсказка по заполнению меток</v-alert-title>
           <div class="mt-0 text">
             В поле <strong>"Метка"</strong> вводите текстовые метки, разделяя их знаком точка с запятой (<strong>;</strong>)
             <br>
@@ -49,7 +46,10 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" class="">
+      <v-col cols="12" class="list-container">
+        <p class="text-subtitle-1 text-medium-emphasis">
+          Всего записей: {{ accountsStore.accountsCount }}
+        </p>
         <v-fade-transition group>
           <div v-if="accountsStore.accountsCount === 0" key="empty" class="text-center py-12">
             <v-icon size="80" color="grey-lighten-1" class="mb-4">
@@ -75,7 +75,7 @@
                 cols="12"
                 md="12"
                 lg="8"
-                class="mx-auto"
+                class="list mx-auto"
             >
               <AccountItem
                   :account="account"
@@ -145,7 +145,7 @@ onMounted(() => {
 .accounts-form {
   max-width: none;
   margin: 0 auto;
-  padding: 1.5rem 2rem; ;
+  padding: 1.5rem 2rem;
 
 }
 
@@ -165,7 +165,73 @@ onMounted(() => {
   justify-content: space-between;
   width: 90%;
 }
+.info button{
+  font-size: 0.8rem;
+}
+.title{
+  font-size: 1.6rem;
+  background-image: linear-gradient(90deg, #443ec5 0%, #9929ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
+.instructions{
+  margin: 0;
+  padding: 0;
+}
+.instructions__title{
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+}
+.text{
+  font-size: 0.8rem;
+  font-family: "Roboto", sans-serif;
+}
+
+@media (max-width: 1024px) {
+  .accounts-form{
+    padding: 1rem 1.6rem; ;
+  }
+  .info{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    width: 100%;
+    text-align: center;
+  }
+  .info button{
+    font-size: 0.6rem;
+  }
+  .info-block{
+    text-align: center;
+  }
+  .title {
+    font-size: 1rem;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+  }
+  .instructions{
+    margin: 0;
+    padding: 0;
+  }
+  .instructions__title{
+    font-size: 1rem;
+  }
+
+  .text{
+    font-size: 0.6rem;
+  }
+  .list-container{
+    padding: 0;
+  }
+  .list{
+    padding: 0;
+  }
+}
 .v-enter-active,
 .v-leave-active {
   transition: all 0.5s ease;
@@ -176,4 +242,4 @@ onMounted(() => {
   opacity: 0;
   transform: translateX(30px);
 }
-</style>
+</style >
