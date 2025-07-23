@@ -1,13 +1,13 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" dark elevation="4" height="60">
+    <v-app-bar class="header" height="60">
       <template #prepend>
         <v-app-bar-nav-icon>
           <v-icon>mdi-account-cog</v-icon>
         </v-app-bar-nav-icon>
       </template>
 
-      <v-app-bar-title class="font-weight-bold">
+      <v-app-bar-title>
         Account Management System
       </v-app-bar-title>
 
@@ -65,6 +65,16 @@ const refreshData = (): void => {
 </script>
 
 <style>
+.v-app-bar.header {
+  background-color: transparent !important;
+  background-image: linear-gradient(90deg, #332eac 0%, #9929ff 100%);
+  color: white;
+}
+.v-app-bar-title{
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
 .v-text-field .v-field {
   border-radius: 8px;
 }
@@ -97,5 +107,12 @@ const refreshData = (): void => {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+@media (max-width: 500px) {
+  .v-app-bar-title{
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 </style>

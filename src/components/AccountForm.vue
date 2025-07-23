@@ -72,6 +72,7 @@
             <v-col
                 v-for="account in accountsStore.accounts"
                 :key="account.id"
+                :data-account-id = "account.id"
                 cols="12"
                 md="12"
                 lg="8"
@@ -117,15 +118,21 @@ const addNewAccount = () => {
 
   const newId = accountsStore.addAccount();
   nextTick(() => {
-    const element = document.querySelector(`[data-account-id="${newId}"]`);
+    const selector = `[data-account-id="${newId}"]`
+    const element = document.querySelector<HTMLElement>(selector);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const input = element.querySelector <HTMLInputElement>('input');
+      if(input) input.focus();
     }
   });
 };
 
 const handleAccountEdit = (accountId: string): void => {
-  accountsStore.updateAccount(accountId, { editMode: true });
+  const acc = accountsStore.accounts.find(acc => acc.id === accountId);
+  if (!acc) return;
+
+  accountsStore.updateAccount(accountId, { editMode: !acc.editMode });
 };
 
 const handleAccountUpdate = (accountId: string, updates: Partial<Account>): void => {

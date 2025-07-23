@@ -4,14 +4,12 @@
       <v-row class="d-flex flex-wrap" align="start">
         <v-col cols="12" class="d-flex justify-space-between pa-0" style="position: relative;">
           <TagList :tags="localLabelsString.split(';').filter(t => t.trim())" />
-
           <v-chip
               v-if="showValidationStatus"
               :color="localAccount.isValid ? 'success' : 'warning'"
               :prepend-icon="localAccount.isValid ? 'mdi-check' : 'mdi-alert'"
               size="small"
               variant="tonal"
-              style="z-index:32"
           >
             {{ localAccount.isValid ? 'Запись сохранена' : 'Заполните обязательные поля' }}
           </v-chip>
@@ -21,10 +19,16 @@
                 icon
                 @click="$emit('edit', account.id)"
                 size="small"
-                class="mr-2"
+                :color="account.editMode ? 'primary' : undefined"
+                :variant="account.editMode ? 'elevated' : 'text'"
+                class="mr-2 edit-button"
             >
-              <v-icon>mdi-pencil</v-icon>
-              <v-tooltip activator="parent" location="top">Редактировать</v-tooltip>
+            <v-icon>
+              {{ account.editMode ? 'mdi-check-outline' : 'mdi-pencil' }}
+            </v-icon>
+            <v-tooltip activator="parent" location="top">
+              {{ account.editMode ? 'Закончить редактирование' : 'Редактировать' }}
+            </v-tooltip>
             </v-btn>
 
             <v-btn
@@ -124,7 +128,7 @@
 
       <v-dialog v-model="deleteDialog" max-width="440">
         <v-card class="pa-4 rounded-xl" elevation="3" style="border: 3px solid #817cff;">
-          <v-card-title class="text-h6 font-weight-bold d-flex align-center mb-2">
+          <v-card-title class="delete-title">
             <v-icon color="error" class="mr-2">mdi-alert</v-icon>
             Подтверждение удаления
           </v-card-title>
@@ -153,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import {ref, watch, onMounted, nextTick} from 'vue';
 import { useAccountsStore } from '../stores/accounts';
 import type { Account, AccountType } from '@/types';
 import { ACCOUNT_TYPES } from '@/types';
@@ -162,6 +166,7 @@ import TagList from './TagList.vue';
 interface Props {
   account: Account;
 }
+const root = ref<HTMLElement>();
 
 interface Emits {
   (e: 'update', accountId: string, updates: Partial<Account>): void;
@@ -213,8 +218,6 @@ const validateAndUpdate = (): void => {
   }
 };
 
-
-
 const handleLabelsBlur = (): void => {
   localAccount.value.labels = accountsStore.parseLabels(localLabelsString.value);
   validateAndUpdate();
@@ -250,6 +253,17 @@ const handleDelete = (): void => {
   deleteDialog.value = false;
   emit('delete', localAccount.value.id);
 };
+
+watch(
+    () => props.account.editMode,
+    async (editing) => {
+      if (editing) {
+        await nextTick();
+        const input = root.value?.querySelector<HTMLInputElement>('input');
+        if (input) input.focus()
+      }
+    }
+)
 </script>
 
 <style scoped>
@@ -275,4 +289,20 @@ const handleDelete = (): void => {
   border-left-color: #f44336;
 }
 
+.delete-title{
+  font-weight: bold;
+  display:flex;
+  align-items: center;
+  font-size: 1.3rem;
+  background-image: linear-gradient(90deg, #443ec5 0%, #9929ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (max-width: 500px) {
+  .delete-title{
+    font-size: 1rem;
+  }
+}
 </style>
